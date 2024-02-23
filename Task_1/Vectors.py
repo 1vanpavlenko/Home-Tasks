@@ -1,21 +1,39 @@
 class Vector:
-    def __init__(self, first_arg, *arguments):
+    def __init__(self, first_arg=0, *arguments):
         if isinstance(first_arg, Vector):
             assert len(arguments) == 0
 
             self.coordinates = first_arg.coordinates
 
         else:
-            assert isinstance(first_arg, int) or isinstance(first_arg, float)
+            if isinstance(first_arg, tuple) or isinstance(first_arg, list):
+                if len(arguments) == 0:
+                    coordinates = tuple(first_arg)
 
-            for arg in arguments:
-                assert isinstance(arg, int) or isinstance(arg, float)
+                else:
+                    for crd in arguments:
+                        assert isinstance(crd, int) or isinstance(crd, float)
 
-            coordinates = (None, first_arg) + arguments
+                    coordinates = tuple(first_arg) + tuple(arguments)
 
-            self.coordinates = coordinates[1:]
+                self.coordinates = coordinates
+
+            elif isinstance(first_arg, int) or isinstance(first_arg, float):
+                if len(arguments) == 0:
+                    coordinates = (first_arg,)
+
+                else:
+                    for crd in arguments:
+                        assert isinstance(crd, int) or isinstance(crd, float)
+
+                    coordinates = (first_arg,) + tuple(arguments)
+
+                self.coordinates = coordinates
 
     def __str__(self):
+        if len(self.coordinates) == 1:
+            return f'({self.coordinates[0]})'
+
         return f'{self.coordinates}'
 
     def dimension(self):
@@ -33,22 +51,15 @@ class Vector:
         return sum(self.coordinates) / len(self.coordinates)
 
     def max(self):
-        maximum = self.coordinates[0]
+        list_of_crd = list(self.coordinates)
 
-        for crd in self.coordinates[1:]:
-            if maximum < crd:
-                maximum = crd
+        list_of_crd.sort()
 
-        return maximum
+        return list_of_crd[-1]
 
     def min(self):
-        if len(self.coordinates) == 1:
-            return self.coordinates[0]
+        list_of_crd = list(self.coordinates)
 
-        minimum = self.coordinates[0]
+        list_of_crd.sort()
 
-        for crd in self.coordinates[1:]:
-            if minimum > crd:
-                minimum = crd
-
-        return minimum
+        return list_of_crd[0]
