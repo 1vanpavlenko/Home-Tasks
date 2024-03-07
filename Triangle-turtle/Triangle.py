@@ -12,9 +12,11 @@ class Triangle:
         self._speed = 0
         self._angle = 0
         self._rotation_point = None
+        self._scale = 1
+        self._scale_point = None
 
-    def set_position(self, new_x, new_y):
-        self._position = new_x, new_y
+    def set_position(self, new_position):
+        self._position = new_position
 
     def drawing_speed(self, new_speed):
         assert new_speed >= 0
@@ -28,6 +30,13 @@ class Triangle:
 
     def set_rotation_point(self, new_rotation_point):
         self._rotation_point = new_rotation_point
+
+    def set_scale(self, new_scale):
+        assert new_scale > 0
+        self._scale = new_scale
+
+    def set_cale_point(self, new_cale_point):
+        self._cale_point = new_cale_point
 
     def add_angle(self, input_angle):
         self._angle += input_angle
@@ -46,18 +55,27 @@ class Triangle:
 
         return rotated_vertex
 
+    @staticmethod
+    def calc_point_scale(point, scale):
+        return point[0] * scale, point[1] * scale
+
     def calc_current_pos(self):
         rotated_vertex_1 = self.calc_point_rotation(self._vertex_1, self._angle)
         rotated_vertex_2 = self.calc_point_rotation(self._vertex_2, self._angle)
+        scale = self._scale
 
         if self._rotation_point == None or self._rotation_point == self._position:
             current_position = self._position
         else:
             vector = (self._position[0] - self._rotation_point[0],
-                               self._position[1] - self._rotation_point[1])
+                      self._position[1] - self._rotation_point[1])
             rotated_vector = self.calc_point_rotation(vector, self._angle)
             current_position = (rotated_vector[0] + self._rotation_point[0],
                                 rotated_vector[1] + self._rotation_point[1])
+
+        if self._scale_point == None or self._scale_point == self._position:
+            rotated_vertex_1 = self.calc_point_scale(rotated_vertex_1, scale)
+            rotated_vertex_2 = self.calc_point_scale(rotated_vertex_2, scale)
 
         current_vertex_1 = (rotated_vertex_1[0] + current_position[0],
                             rotated_vertex_1[1] + current_position[1])
