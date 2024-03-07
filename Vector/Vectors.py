@@ -7,7 +7,10 @@ class Vector:
 
         else:
             if isinstance(first_arg, tuple) or isinstance(first_arg, list):
-                if len(arguments) == 0:
+                if len(first_arg) == 0:
+                    coordinates = (0,)
+
+                elif len(arguments) == 0:
                     coordinates = tuple(first_arg)
 
                 else:
