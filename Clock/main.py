@@ -45,6 +45,14 @@ while True:
     clock_arrow_sec.set_angle(6 * seconds)
     arrow_sec = clock_arrow_sec.draw()
 
+    end = time.thread_time()
+    dur = end - start
+
+    if dur >= 1:
+        pass
+    else:
+        time.sleep(1 - dur)
+
     if seconds == 60:
         seconds = 0
         minutes += 1
@@ -63,13 +71,3 @@ while True:
     if prev_hours != hours:
         prev_hour = hours
         hour_to_update = True
-
-    end = time.thread_time()
-    dur = end - start
-
-    if dur >= 1:
-        pass
-    else:
-        time.sleep(1 - dur)
-
-

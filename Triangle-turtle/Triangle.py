@@ -35,8 +35,8 @@ class Triangle:
         assert new_scale > 0
         self._scale = new_scale
 
-    def set_cale_point(self, new_cale_point):
-        self._cale_point = new_cale_point
+    def set_scale_point(self, new_cale_point):
+        self._scale_point = new_cale_point
 
     def add_angle(self, input_angle):
         self._angle += input_angle
@@ -60,29 +60,60 @@ class Triangle:
         return point[0] * scale, point[1] * scale
 
     def calc_current_pos(self):
-        rotated_vertex_1 = self.calc_point_rotation(self._vertex_1, self._angle)
-        rotated_vertex_2 = self.calc_point_rotation(self._vertex_2, self._angle)
+        position = self._position
+        vertex_1 = self._vertex_1
+        vertex_2 = self._vertex_2
         scale = self._scale
+        scale_point = self._scale_point
+        angle = self._angle
+        rotation_point = self._rotation_point
 
-        if self._rotation_point == None or self._rotation_point == self._position:
-            current_position = self._position
+        if scale_point is None or scale_point == position:
+            vertex_1 = self.calc_point_scale(vertex_1, scale)
+            vertex_2 = self.calc_point_scale(vertex_2, scale)
+
         else:
-            vector = (self._position[0] - self._rotation_point[0],
-                      self._position[1] - self._rotation_point[1])
-            rotated_vector = self.calc_point_rotation(vector, self._angle)
-            current_position = (rotated_vector[0] + self._rotation_point[0],
-                                rotated_vector[1] + self._rotation_point[1])
+            vector_0 = -scale_point[0], -scale_point[1]
+            vector_1 = vertex_1[0] - scale_point[0], vertex_1[1] - scale_point[1]
+            vector_2 = vertex_2[0] - scale_point[0], vertex_2[1] - scale_point[1]
+            vector_rotation_point = ((rotation_point[0] - scale_point[0],
+                                     rotation_point[1] - scale_point[1])
+                                     if rotation_point is not None else None)
 
-        if self._scale_point == None or self._scale_point == self._position:
-            rotated_vertex_1 = self.calc_point_scale(rotated_vertex_1, scale)
-            rotated_vertex_2 = self.calc_point_scale(rotated_vertex_2, scale)
+            scaled_vector_0 = self.calc_point_scale(vector_0, scale)
+            scaled_vector_1 = self.calc_point_scale(vector_1, scale)
+            scaled_vector_2 = self.calc_point_scale(vector_2, scale)
+            scaled_vector_rotation_point = (self.calc_point_scale(vector_rotation_point, scale)
+                                            if rotation_point is not None else None)
+
+            scaled_scale_point = self.calc_point_scale(scale_point, scale)
+            position = (scaled_vector_0[0] + scaled_scale_point[0],
+                        scaled_vector_0[1] + scaled_scale_point[1])
+            vertex_1 = (scaled_vector_1[0] + scaled_scale_point[0],
+                        scaled_vector_1[1] + scaled_scale_point[1])
+            vertex_2 = (scaled_vector_2[0] + scaled_scale_point[0],
+                        scaled_vector_2[1] + scaled_scale_point[1])
+            rotation_point = ((scaled_vector_rotation_point[0] + scaled_scale_point[0],
+                               scaled_vector_rotation_point[1] + scaled_scale_point[1])
+                              if rotation_point is not None else None)
+
+        rotated_vertex_1 = self.calc_point_rotation(vertex_1, self._angle)
+        rotated_vertex_2 = self.calc_point_rotation(vertex_2, self._angle)
+
+        if rotation_point is None or rotation_point == position:
+            current_position = position
+        else:
+            vector_position = position[0] - rotation_point[0], position[1] - rotation_point[1]
+            rotated_vector_position = self.calc_point_rotation(vector_position, angle)
+            current_position = (rotated_vector_position[0] + rotation_point[0],
+                                rotated_vector_position[1] + rotation_point[1])
 
         current_vertex_1 = (rotated_vertex_1[0] + current_position[0],
                             rotated_vertex_1[1] + current_position[1])
         current_vertex_2 = (rotated_vertex_2[0] + current_position[0],
                             rotated_vertex_2[1] + current_position[1])
 
-        return current_vertex_1, current_vertex_2, current_position
+        return current_position, current_vertex_1, current_vertex_2
 
     def draw(self):
         triangle = turtle.Turtle()
@@ -90,7 +121,7 @@ class Triangle:
         triangle.speed(self._speed)
         triangle.color(self._color)
 
-        current_vertex_1, current_vertex_2, current_position = self.calc_current_pos()
+        current_position, current_vertex_1, current_vertex_2 = self.calc_current_pos()
 
         triangle.up()
         triangle.setpos(current_position)
