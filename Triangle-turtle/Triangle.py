@@ -92,15 +92,10 @@ class Triangle:
     def vector_length(vector):
         return (vector[0] ** 2 + vector[1] ** 2) ** 0.5
 
-    def inner_angle(self, vertex, in_radians=False):
+    def inner_angle(self, index, in_radians=False):
         list_of_vertices = self._list_of_vertexes.copy()
 
-        if (vertex == self._position
-                or vertex == self.calc_current_pos()[1]
-                or vertex == self.calc_current_pos()[2]):
-            vertex = self.calc_vector(vertex, self._position)
-        else:
-            assert vertex in list_of_vertices
+        vertex = list_of_vertices[index]
 
         list_of_vertices.remove(vertex)
         vertex_a, vertex_b = list_of_vertices
