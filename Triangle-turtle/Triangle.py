@@ -8,6 +8,7 @@ class Triangle:
 
     def __init__(self, vertex_1: tuple, vertex_2: tuple):
         assert len(vertex_1) == 2 and len(vertex_2) == 2
+
         self._vertex_1 = vertex_1
         self._vertex_2 = vertex_2
         self._position = 0, 0
@@ -23,14 +24,14 @@ class Triangle:
 
         self._position = new_position
 
-    def drawing_speed(self, new_speed):
+    def drawing_speed(self, new_speed: float):
         assert new_speed >= 0
 
         self._speed = new_speed
 
     def set_color(self, new_color: str):
         if new_color[0] == "#":
-            assert len(new_color)[1:] == 6
+            assert len(new_color) == 7
 
         self.color = new_color
 
@@ -42,7 +43,7 @@ class Triangle:
 
         self._rotation_point = new_rotation_point
 
-    def set_scale(self, new_scale):
+    def set_scale(self, new_scale: float):
         assert new_scale > 0
 
         self._scale = new_scale
