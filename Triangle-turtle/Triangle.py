@@ -112,19 +112,17 @@ class Triangle:
     def inner_angle(self, index: int, in_radians=False):
         assert 0 <= index <= 2
 
-        list_of_vertices = self._list_of_vertexes.copy()
+        list_of_vertexes = self._list_of_vertexes.copy()
+        vertex = list_of_vertexes[index]
+        list_of_vertexes.remove(vertex)
 
-        vertex = list_of_vertices[index]
-
-        list_of_vertices.remove(vertex)
-        vertex_a, vertex_b = list_of_vertices
+        vertex_a, vertex_b = list_of_vertexes
 
         vector_a = self.calc_vector(vertex_a, vertex)
         vector_b = self.calc_vector(vertex_b, vertex)
         a, b = self.vector_length(vector_a), self.vector_length(vector_b)
 
         cos_ab = (vector_a[0] * vector_b[0] + vector_a[1] * vector_b[1]) / (a * b)
-
         angle_radians = acos(cos_ab)
 
         if in_radians:
@@ -153,13 +151,9 @@ class Triangle:
         return Triangle.move_point(scaled_vector, rotation_point)
 
     def calc_current_pos(self):
-        position = self._position
-        vertex_1 = self._vertex_1
-        vertex_2 = self._vertex_2
-        scale = self._scale
-        scale_point = self._scale_point
-        angle = self._angle
-        rotation_point = self._rotation_point
+        position, vertex_1, vertex_2 = self._position, self._vertex_1, self._vertex_2
+        scale_point, scale = self._scale_point, self._scale
+        rotation_point, angle = self._rotation_point, self._angle
 
         scaled_position = self.calc_point_scale(scale, position, scale_point)
         scaled_vertex_1 = self.calc_point_scale(scale, vertex_1)
