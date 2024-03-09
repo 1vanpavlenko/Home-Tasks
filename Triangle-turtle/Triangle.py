@@ -20,13 +20,18 @@ class Triangle:
 
     def set_position(self, new_position: tuple):
         assert len(new_position) == 2
+
         self._position = new_position
 
     def drawing_speed(self, new_speed):
         assert new_speed >= 0
+
         self._speed = new_speed
 
     def set_color(self, new_color: str):
+        if new_color[0] == "#":
+            assert len(new_color)[1:] == 6
+
         self.color = new_color
 
     def set_angle(self, new_angle: float):
@@ -34,16 +39,20 @@ class Triangle:
 
     def set_rotation_point(self, new_rotation_point: tuple):
         assert len(new_rotation_point) == 2
+
         self._rotation_point = new_rotation_point
 
     def set_scale(self, new_scale):
         assert new_scale > 0
+
         self._scale = new_scale
 
-    def set_scale_point(self, new_scale_point):
+    def set_scale_point(self, new_scale_point: tuple):
+        assert len(new_scale_point) == 2
+
         self._scale_point = new_scale_point
 
-    def add_angle(self, input_angle):
+    def add_angle(self, input_angle: float):
         self._angle += input_angle
 
     def incenter(self):
@@ -61,9 +70,9 @@ class Triangle:
     def circumcenter(self):
         position, vertex_1, vertex_2 = self.calc_current_pos()
 
-        angle_p = self.inner_angle(position, True)        # position
-        angle_v1 = self.inner_angle(vertex_1, True)       # vertex_1
-        angle_v2 = self.inner_angle(vertex_2, True)       # vertex_2
+        angle_p = self.inner_angle(0, True)        # position
+        angle_v1 = self.inner_angle(1, True)       # vertex_1
+        angle_v2 = self.inner_angle(2, True)       # vertex_2
 
         circumcenter = (
             (position[0] * sin(2 * angle_p) + vertex_1[0] * sin(2 * angle_v1) + vertex_2[0] * sin(2 * angle_v2))
@@ -75,24 +84,33 @@ class Triangle:
 
     def centroid(self):
         position, vertex_1, vertex_2 = self.calc_current_pos()
+
         centroid = ((position[0] + vertex_1[0] + vertex_2[0]) / 3,
                     (position[1] + vertex_1[1] + vertex_2[1]) / 3,)
 
         return centroid
 
     @staticmethod
-    def calc_vector(head, root):
+    def calc_vector(head: tuple, root: tuple):
+        assert len(head) == 2 and len(root) == 2
+
         return head[0] - root[0], head[1] - root[1]
 
     @staticmethod
-    def move_point(vector, new_root):
-        return vector[0] + new_root[0], vector[1] + new_root[1]
+    def move_point(point: tuple, new_position: tuple):
+        assert len(point) == 2 and len(new_position) == 2
+
+        return point[0] + new_position[0], point[1] + new_position[1]
 
     @staticmethod
-    def vector_length(vector):
+    def vector_length(vector: tuple):
+        assert len(vector) == 2
+
         return (vector[0] ** 2 + vector[1] ** 2) ** 0.5
 
-    def inner_angle(self, index, in_radians=False):
+    def inner_angle(self, index: int, in_radians=False):
+        assert 0 <= index <= 2
+
         list_of_vertices = self._list_of_vertexes.copy()
 
         vertex = list_of_vertices[index]
@@ -114,7 +132,9 @@ class Triangle:
         return degrees(angle_radians)
 
     @staticmethod
-    def calc_point_rotation(angle: int, point: tuple, rotation_point=(0, 0)):
+    def calc_point_rotation(angle: float, point: tuple, rotation_point=(0, 0)):
+        assert len(point) == 2 and len(rotation_point) == 2
+
         theta = radians(angle)
         vector = Triangle.calc_vector(point, rotation_point)
         rotated_vector = (vector[0] * cos(theta) + vector[1] * sin(theta),
@@ -124,6 +144,8 @@ class Triangle:
 
     @staticmethod
     def calc_point_scale(scale: float, point: tuple, rotation_point=(0, 0)):
+        assert scale > 0 and len(point) == 2 and len(rotation_point) == 2
+
         vector = Triangle.calc_vector(point, rotation_point)
         scaled_vector = vector[0] * scale, vector[1] * scale
 
@@ -162,12 +184,11 @@ class Triangle:
         triangle.up()
         triangle.setpos(current_position)
         triangle.down()
-
         triangle.goto(current_vertex_1)
         triangle.goto(current_vertex_2)
         triangle.setpos(current_position)
+        triangle.up()
 
-        triangle.down()
         triangle.hideturtle()
 
         return triangle

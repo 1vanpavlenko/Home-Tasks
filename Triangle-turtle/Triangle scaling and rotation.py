@@ -15,7 +15,6 @@ scaling_value = 1
 scale_step = (scale - 1) / 120
 
 sample_triangle = triangle.draw()
-sample_triangle.hideturtle()
 
 sample_dots = turtle.Turtle()
 sample_dots.up()

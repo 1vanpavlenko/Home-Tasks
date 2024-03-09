@@ -25,10 +25,10 @@ if __name__ == '__main__':
     for i in range(100):
         rand_v1 = random.randint(-200, 200), random.randint(-200, 200)
         rand_v2 = random.randint(-200, 200), random.randint(-200, 200)
-        rand_px, rand_py = random.randint(-200, 200), random.randint(-200, 200)
+        rand_p = random.randint(-200, 200), random.randint(-200, 200)
 
         triangle = Triangle(rand_v1, rand_v2)
-        triangle.set_position((rand_px, rand_py))
+        triangle.set_position(rand_p)
         triangle.drawing_speed(speed)
         rand_color = random__hex_color()
         triangle.set_color(rand_color)
