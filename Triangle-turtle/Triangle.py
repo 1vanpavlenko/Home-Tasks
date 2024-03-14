@@ -1,4 +1,3 @@
-import math
 from math import cos, sin, radians, acos, degrees
 import turtle
 
