@@ -1,4 +1,4 @@
-from Vectors import Vector
+from Vector import Vector
 from vector_reader import *
 
 list_of_vec = read_file('input01.txt')

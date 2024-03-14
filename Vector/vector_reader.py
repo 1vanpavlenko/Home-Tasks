@@ -1,132 +1,47 @@
-from Vectors import Vector
+from Vector import Vector
 
 
-def read_vector(raw_vec: str) -> Vector:
-    output = []
-
-    for crd in raw_vec.split():
-        if crd != ' ':
-            output.append(int(crd))
-
-    return Vector(output)
+files_list = ["input01.txt", "input02.txt", "input03.txt", "input04.txt"]
 
 
 def read_file(file: str) -> list:
-    list_of_vec = []
-
     with open(file) as file:
-        raw_list_of_vec = file.readlines()
+        raw_args_list = file.readlines()
+        args_list = []
+        vectors_list = []
 
-        for raw_vec in raw_list_of_vec:
-            vec = read_vector(raw_vec)
-            list_of_vec.append(vec)
+        for raw_args in raw_args_list:
+            args = list(map(float, raw_args.split()))
+            args_list.append(args)
 
-    return list_of_vec
+        for args in args_list:
+            if len(args) > 0:
+                vectors_list.append(Vector(*args))
 
-
-def largest_dim(list_of_vec: list):
-    list_of_dim = []
-
-    for vec in list_of_vec:
-        list_of_dim.append(vec.dimension())
-
-    copy = list_of_dim.copy()
-    copy.sort()
-
-    max_dim = copy[-1]
-
-    if list_of_dim.count(max_dim) == 1:
-        return list_of_vec[list_of_dim.index(max_dim)]
-
-    else:
-        min_len = []
-
-        index = 0
-
-        for val in list_of_dim:
-            if val == max_dim:
-                min_len.append(list_of_vec[index].length())
-
-            index += 1
-
-        return min(min_len)
+        return vectors_list
 
 
-def longest_vect(list_of_vec: list):
-    list_of_lengths = []
-
-    for vec in list_of_vec:
-        list_of_lengths.append(vec.length())
-
-    copy = list_of_lengths.copy()
-    copy.sort()
-
-    max_val = copy[-1]
-
-    if list_of_lengths.count(max_val) == 1:
-        return list_of_vec[list_of_lengths.index(max_val)]
-
-    else:
-        dim = []
-
-        index = 0
-
-        for val in list_of_lengths:
-            if val == max_val:
-                dim.append(list_of_vec[index].dimension())
-
-            index += 1
-
-        return min(dim)
+def list_max_dimension(vectors_list: list) -> (int, float):
+    pass
 
 
-def average_len(list_of_vec: list):
-    list_of_lengths = []
-
-    for vec in list_of_vec:
-        list_of_lengths.append(vec.length())
-
-    return sum(list_of_lengths) / len(list_of_lengths)
+def list_max_length(vectors_list: list) -> (int, float):
+    pass
 
 
-def count_above_av_len(list_of_vec: list):
-    counter = 0
-    av_val = average_len(list_of_vec)
-
-    for vec in list_of_vec:
-        if vec > av_val:
-            counter += 1
-
-    return counter
+def list_max_component(vectors_list: list) -> (int, float):
+    pass
 
 
-def find_largest_component(list_of_vec: list):
-    list_of_max_comp = []
+def list_min_component(vectors_list: list) -> (int, float):
+    pass
 
-    for vec in list_of_vec:
-        list_of_max_comp.append(vec.max())
 
-    max_val = max(list_of_max_comp)
+if __name__ == "__main__":
+    list_of_vectors = read_file('input01.txt')
 
-    if list_of_max_comp.count(max_val) == 1:
-        return max_val
-
-    else:
-        indexes = []
-        ind = 0
-        min_min = []
-
-        for val in list_of_max_comp:
-            if val == max_val:
-                indexes.append(ind)
-
-            indexes += 1
-
-        for i in indexes:
-            min_min.append(list_of_vec[i].min())
-
-        return list_of_vec[indexes[min_min.index(min(min_min))]]
-
+    for vector in list_of_vectors:
+        print(vector)
 
 
 
