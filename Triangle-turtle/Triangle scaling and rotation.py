@@ -29,7 +29,7 @@ sample_dots.hideturtle()
 
 for angle in range(0, 363, 3):
     triangle.set_angle(angle)
-    triangle.set_scale(scaling_value)
+    triangle.set_scale((scaling_value, scaling_value))
     drawn_triangle = triangle.draw()
     scaling_value += scale_step
 

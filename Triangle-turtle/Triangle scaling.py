@@ -18,6 +18,7 @@ scale = float(input("Enter scaling value bigger than 1: "))
 assert scale > 1
 
 triangle = Triangle(vertex_1, vertex_2)
+triangle.set_position(position)
 triangle.set_scale_point(triangle.centroid())
 dot = turtle.Turtle()
 dot.up()
