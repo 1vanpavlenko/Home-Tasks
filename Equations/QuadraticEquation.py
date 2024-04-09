@@ -62,3 +62,5 @@ if __name__ == '__main__':
     e = QuadraticEquation(1, -4, 3)
     e.show()
     print(e.solve())
+
+    print(e.a, e.b, e.c)
